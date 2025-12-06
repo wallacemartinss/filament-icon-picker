@@ -91,25 +91,8 @@ composer require mallardduck/blade-lucide-icons
 
 See all available icon packages at [Blade Icons](https://blade-ui-kit.com/blade-icons#icon-packages).
 
-### Step 3: Register the plugin in your Panel
 
-Add the plugin to your Filament panel provider:
-
-```php
-// app/Providers/Filament/AdminPanelProvider.php
-
-use Wallacemartinss\FilamentIconPicker\FilamentIconPickerPlugin;
-
-public function panel(Panel $panel): Panel
-{
-    return $panel
-        ->plugins([
-            FilamentIconPickerPlugin::make(),
-        ]);
-}
-```
-
-### Step 4: Add package views to your Tailwind CSS configuration
+### Step 3: Add package views to your Tailwind CSS configuration
 
 Add the plugin's views to your theme CSS file so Tailwind can scan them:
 
@@ -119,25 +102,25 @@ Add the plugin's views to your theme CSS file so Tailwind can scan them:
 @source '../../../../vendor/wallacemartinss/filament-icon-picker/resources/views/**/*';
 ```
 
-### Step 5: Build your assets
+### Step 4: Build your assets
 
 ```bash
 npm run build
 ```
 
-### Step 6: (Optional) Publish the config file
+### Step 5: (Optional) Publish the config file
 
 ```bash
 php artisan vendor:publish --tag="filament-icon-picker-config"
 ```
 
-### Step 7: Clear caches
+### Step 6: Clear caches
 
 ```bash
 php artisan optimize:clear
 ```
 
-### Step 8: (Optional) Cache icons for better performance
+### Step 7: (Optional) Cache icons for better performance
 
 ```bash
 php artisan icons:cache

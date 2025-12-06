@@ -4,10 +4,85 @@ All notable changes to `filament-icon-picker` will be documented in this file.
 
 ## [Unreleased]
 
-## [1.0.0] - 2024-12-06
+## [1.2.0] - 2025-12-06
+
+### Added
+- Interactive `filament-icon-picker:install-icons` command for easy icon package installation
+- `--list` option to show available and installed packages
+- `--all` option to install all icon packages at once
+- `--no-update-config` option to skip config file updates
+- Automatic config update with selected icon sets after installation
+- Support for 10 icon packages: Heroicons, FontAwesome, Phosphor, Material Design, Tabler, Lucide, Remix, Bootstrap, Octicons, Feather
+
+### Changed
+- Improved README with comprehensive installation guide
+- Better documentation for set names vs package names
+
+### Fixed
+- IconPickerField now respects `allowed_sets` from config file
+- Correct set names: `heroicons`, `phosphor-icons`, `google-material-design-icons`
+- Dropdown filter now shows only configured icon sets
+
+## [1.1.5] - 2025-12-05
+
+### Fixed
+- Correct icon set names in configuration examples
+- Better handling of FontAwesome subsets (solid, regular, brands)
+
+## [1.1.4] - 2025-12-05
+
+### Changed
+- Renamed components for better clarity:
+  - `IconPicker` → `IconPickerField`
+  - `IconColumn` → `IconPickerColumn`
+  - `IconEntry` → `IconPickerEntry`
+
+## [1.1.3] - 2025-12-05
+
+### Added
+- Provider dropdown filter to filter icons by their set
+- `showSetFilter()` method to toggle the filter visibility
+
+### Changed
+- Improved modal UI with better organization
+
+## [1.1.2] - 2025-12-05
+
+### Added
+- Infinite scroll for better performance with large icon sets
+- `icons_per_page` config option
+
+### Changed
+- Icons are now loaded in batches for smoother scrolling
+
+## [1.1.1] - 2025-12-05
+
+### Added
+- Modal interface for icon selection
+- Real-time search filtering
+- Grid layout with configurable columns
+
+### Changed
+- Improved Alpine.js integration
+- Better responsive design
+
+## [1.1.0] - 2025-12-05
+
+### Added
+- Support for multiple icon sets
+- `allowedSets()` method to restrict available icons
+- Configuration file with customizable options
+
+## [1.0.0] - 2025-12-04
 
 ### Added
 - Initial release
+- `IconPickerField` form component
+- `IconPickerColumn` table column
+- `IconPickerEntry` infolist entry
+- Support for blade-ui-kit/blade-icons
+- Preview of selected icon
+- 14 language translations (AR, DE, EN, ES, FA, FR, HI, IT, JA, KO, NL, PT_BR, RU, ZH_CN)
 - Form field component with modal icon picker
 - Table column component for displaying icons
 - Infolist entry component for read-only display
@@ -16,6 +91,5 @@ All notable changes to `filament-icon-picker` will be documented in this file.
 - Set filtering
 - Lazy loading with infinite scroll
 - Dark mode support
-- Multi-language support (en, pt_BR)
 - Configurable allowed icon sets
 - Icon caching for performance
