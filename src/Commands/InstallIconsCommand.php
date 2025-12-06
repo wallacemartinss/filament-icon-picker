@@ -240,11 +240,6 @@ class InstallIconsCommand extends Command
         $result = $this->installPackages($packagesToInstall);
 
         if ($result === self::SUCCESS && ! $this->option('no-config')) {
-            // Add already installed sets
-            foreach ($installed as $info) {
-                $setsToAdd = array_merge($setsToAdd, $info['sets']);
-            }
-
             $this->updateConfigIfNeeded($setsToAdd);
         }
 
