@@ -1,0 +1,72 @@
+{
+    "name": "wallacemartinss/filament-icon-picker",
+    "description": "A beautiful icon picker component for Filament v4 using blade-ui-kit/blade-icons",
+    "keywords": [
+        "laravel",
+        "filament",
+        "icon-picker",
+        "blade-icons",
+        "filament-plugin",
+        "heroicons",
+        "fontawesome",
+        "phosphor",
+        "material-icons"
+    ],
+    "homepage": "https://github.com/wallacemartinss/filament-icon-picker",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Wallace Martins",
+            "email": "wallacemartinss@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "blade-ui-kit/blade-icons": "^1.0",
+        "filament/filament": "^4.0",
+        "spatie/laravel-package-tools": "^1.16"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^10.0",
+        "phpunit/phpunit": "^11.0"
+    },
+    "suggest": {
+        "blade-ui-kit/blade-heroicons": "Heroicons - 1300+ icons (recommended)",
+        "owenvoke/blade-fontawesome": "Font Awesome - 2800+ icons",
+        "codeat3/blade-phosphor-icons": "Phosphor Icons - 9000+ icons",
+        "codeat3/blade-google-material-design-icons": "Google Material Design - 10000+ icons",
+        "blade-ui-kit/blade-tabler-icons": "Tabler Icons - 4400+ icons",
+        "mallardduck/blade-lucide-icons": "Lucide Icons - 1400+ icons",
+        "codeat3/blade-bootstrap-icons": "Bootstrap Icons - 2000+ icons",
+        "codeat3/blade-remix-icon": "Remix Icons - 2800+ icons"
+    },
+    "autoload": {
+        "psr-4": {
+            "Wallacemartinss\\FilamentIconPicker\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Wallacemartinss\\FilamentIconPicker\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Wallacemartinss\\FilamentIconPicker\\FilamentIconPickerServiceProvider"
+            ]
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "@php artisan filament-icon-picker:post-install --ansi || true"
+        ]
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "config": {
+        "sort-packages": true
+    }
+}

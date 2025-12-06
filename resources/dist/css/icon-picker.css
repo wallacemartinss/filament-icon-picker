@@ -1,0 +1,84 @@
+.filament-icon-picker {
+    position: relative;
+}
+
+.filament-icon-picker-trigger {
+    min-height: 42px;
+}
+
+.filament-icon-picker-modal {
+    animation: modal-appear 0.2s ease-out;
+}
+
+@keyframes modal-appear {
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* Custom scrollbar for icons container */
+.filament-icon-picker-modal .overflow-y-auto {
+    scrollbar-width: thin;
+    scrollbar-color: #d1d5db transparent;
+}
+
+.filament-icon-picker-modal .overflow-y-auto::-webkit-scrollbar {
+    width: 6px;
+}
+
+.filament-icon-picker-modal .overflow-y-auto::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.filament-icon-picker-modal .overflow-y-auto::-webkit-scrollbar-thumb {
+    background-color: #d1d5db;
+    border-radius: 3px;
+}
+
+.dark .filament-icon-picker-modal .overflow-y-auto {
+    scrollbar-color: #4b5563 transparent;
+}
+
+.dark .filament-icon-picker-modal .overflow-y-auto::-webkit-scrollbar-thumb {
+    background-color: #4b5563;
+}
+
+/* Icon button hover effects */
+.filament-icon-picker-modal button[type="button"]:not(:disabled):hover .flex {
+    transform: scale(1.1);
+}
+
+/* Shimmer loading effect */
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+.filament-icon-picker .animate-shimmer {
+    background: linear-gradient(
+        90deg,
+        #e5e7eb 0%,
+        #f3f4f6 50%,
+        #e5e7eb 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+.dark .filament-icon-picker .animate-shimmer {
+    background: linear-gradient(
+        90deg,
+        #374151 0%,
+        #4b5563 50%,
+        #374151 100%
+    );
+}
