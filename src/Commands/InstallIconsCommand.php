@@ -51,7 +51,7 @@ class InstallIconsCommand extends Command
             'sets' => ['gmdi'],
         ],
         'tabler' => [
-            'package' => 'blade-ui-kit/blade-tabler-icons',
+            'package' => 'secondnetwork/blade-tabler-icons',
             'description' => 'Tabler Icons',
             'icons' => '~4,400',
             'sets' => ['tabler'],
