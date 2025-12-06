@@ -346,23 +346,24 @@ class InstallIconsCommand extends Command
         $content = File::get($configPath);
         $uniqueSets = array_unique($sets);
 
+        // Show what will be configured
+        $this->newLine();
+        $this->line('<fg=white;options=bold>📋 Icon sets to configure:</>');
+        foreach ($uniqueSets as $set) {
+            $this->line("   <fg=cyan>•</> {$set}");
+        }
+        $this->newLine();
+
         // Check if allowed_sets is empty (default)
         if (preg_match("/'allowed_sets'\s*=>\s*\[\s*\]/", $content)) {
-            // Config has empty allowed_sets, ask if user wants to restrict
-            $this->newLine();
-            note('Your config has "allowed_sets" set to empty array (shows all installed icons).');
-
-            if (confirm('Would you like to restrict to only the packages you just installed?', false)) {
+            if (confirm('Update config with these icon sets?', true)) {
                 $this->writeAllowedSets($configPath, $content, $uniqueSets, "/'allowed_sets'\s*=>\s*\[\s*\]/");
             }
         } elseif (preg_match("/'allowed_sets'\s*=>\s*\[/", $content)) {
             // Config has existing allowed_sets values
-            $this->newLine();
             note('Your config already has "allowed_sets" configured.');
-            $this->line('   Selected sets: ' . implode(', ', $uniqueSets));
-            $this->newLine();
 
-            if (confirm('Would you like to update allowed_sets with only the selected packages?', false)) {
+            if (confirm('Replace with the selected icon sets?', true)) {
                 // Match the entire allowed_sets array (multiline)
                 $pattern = "/'allowed_sets'\s*=>\s*\[[^\]]*\]/s";
                 $this->writeAllowedSets($configPath, $content, $uniqueSets, $pattern);

@@ -116,8 +116,6 @@ Add the plugin's views to your theme CSS file so Tailwind can scan them:
 ```css
 /* resources/css/filament/admin/theme.css */
 
-@import '/vendor/filament/filament/resources/css/theme.css';
-
 @source '../../../../vendor/wallacemartinss/filament-icon-picker/resources/views/**/*';
 ```
 
