@@ -63,7 +63,7 @@ class InstallIconsCommand extends Command
             'sets' => ['lucide'],
         ],
         'bootstrap' => [
-            'package' => 'codeat3/blade-bootstrap-icons',
+            'package' => 'davidhsianturi/blade-bootstrap-icons',
             'description' => 'Bootstrap Icons',
             'icons' => '~2,000',
             'sets' => ['bi'],
@@ -344,6 +344,7 @@ class InstallIconsCommand extends Command
     protected function updateAllowedSets(string $configPath, array $sets): void
     {
         $content = File::get($configPath);
+        $uniqueSets = array_unique($sets);
 
         // Check if allowed_sets is empty (default)
         if (preg_match("/'allowed_sets'\s*=>\s*\[\s*\]/", $content)) {
@@ -352,16 +353,38 @@ class InstallIconsCommand extends Command
             note('Your config has "allowed_sets" set to empty array (shows all installed icons).');
 
             if (confirm('Would you like to restrict to only the packages you just installed?', false)) {
-                $setsString = "['" . implode("', '", array_unique($sets)) . "']";
-                $newContent = preg_replace(
-                    "/'allowed_sets'\s*=>\s*\[\s*\]/",
-                    "'allowed_sets' => {$setsString}",
-                    $content
-                );
-
-                File::put($configPath, $newContent);
-                info('Config updated with selected icon sets.');
+                $this->writeAllowedSets($configPath, $content, $uniqueSets, "/'allowed_sets'\s*=>\s*\[\s*\]/");
             }
+        } elseif (preg_match("/'allowed_sets'\s*=>\s*\[/", $content)) {
+            // Config has existing allowed_sets values
+            $this->newLine();
+            note('Your config already has "allowed_sets" configured.');
+            $this->line('   Selected sets: ' . implode(', ', $uniqueSets));
+            $this->newLine();
+
+            if (confirm('Would you like to update allowed_sets with only the selected packages?', false)) {
+                // Match the entire allowed_sets array (multiline)
+                $pattern = "/'allowed_sets'\s*=>\s*\[[^\]]*\]/s";
+                $this->writeAllowedSets($configPath, $content, $uniqueSets, $pattern);
+            }
+        }
+    }
+
+    /**
+     * @param  array<string>  $sets
+     */
+    protected function writeAllowedSets(string $configPath, string $content, array $sets, string $pattern): void
+    {
+        $setsString = "[\n        '" . implode("',\n        '", $sets) . "',\n    ]";
+        $replacement = "'allowed_sets' => " . $setsString;
+
+        $newContent = preg_replace($pattern, $replacement, $content);
+
+        if ($newContent !== null && $newContent !== $content) {
+            File::put($configPath, $newContent);
+            info('Config updated with selected icon sets.');
+        } else {
+            warning('Could not update config file. Please update manually.');
         }
     }
 
