@@ -152,13 +152,13 @@ php artisan icons:cache
 ### Form Field
 
 ```php
-use Wallacemartinss\FilamentIconPicker\Forms\Components\IconPicker;
+use Wallacemartinss\FilamentIconPicker\Forms\Components\IconPickerField;
 
 public static function form(Form $form): Form
 {
     return $form
         ->schema([
-            IconPicker::make('icon')
+            IconPickerField::make('icon')
                 ->label('Select an Icon')
                 ->required(),
         ]);
@@ -168,41 +168,41 @@ public static function form(Form $form): Form
 #### Restricting Icon Sets
 
 ```php
-IconPicker::make('icon')
+IconPickerField::make('icon')
     ->allowedSets(['heroicons', 'fontawesome-solid', 'phosphor-icons'])
 ```
 
 #### Custom Modal Size
 
 ```php
-IconPicker::make('icon')
+IconPickerField::make('icon')
     ->modalSize('5xl') // sm, md, lg, xl, 2xl, 3xl, 4xl, 5xl, 6xl, 7xl
 ```
 
 #### With Placeholder
 
 ```php
-IconPicker::make('icon')
+IconPickerField::make('icon')
     ->placeholder('Choose an icon...')
 ```
 
 #### Hide Set Filter
 
 ```php
-IconPicker::make('icon')
+IconPickerField::make('icon')
     ->showSetFilter(false)
 ```
 
 ### Table Column
 
 ```php
-use Wallacemartinss\FilamentIconPicker\Tables\Columns\IconColumn;
+use Wallacemartinss\FilamentIconPicker\Tables\Columns\IconPickerColumn;
 
 public static function table(Table $table): Table
 {
     return $table
         ->columns([
-            IconColumn::make('icon')
+            IconPickerColumn::make('icon')
                 ->label('Icon'),
         ]);
 }
@@ -211,13 +211,13 @@ public static function table(Table $table): Table
 ### Infolist Entry
 
 ```php
-use Wallacemartinss\FilamentIconPicker\Infolists\Components\IconEntry;
+use Wallacemartinss\FilamentIconPicker\Infolists\Components\IconPickerEntry;
 
 public static function infolist(Infolist $infolist): Infolist
 {
     return $infolist
         ->schema([
-            IconEntry::make('icon')
+            IconPickerEntry::make('icon')
                 ->label('Icon'),
         ]);
 }

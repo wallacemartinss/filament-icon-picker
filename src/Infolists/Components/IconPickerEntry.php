@@ -6,7 +6,7 @@ namespace Wallacemartinss\FilamentIconPicker\Infolists\Components;
 
 use Filament\Infolists\Components\Entry;
 
-class IconEntry extends Entry
+class IconPickerEntry extends Entry
 {
     protected string $view = 'filament-icon-picker::infolists.components.icon-entry';
 

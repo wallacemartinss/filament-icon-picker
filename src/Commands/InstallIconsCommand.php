@@ -3,6 +3,7 @@
 namespace Wallacemartinss\FilamentIconPicker\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\File;
 
 use function Laravel\Prompts\confirm;
 use function Laravel\Prompts\info;
@@ -16,66 +17,69 @@ class InstallIconsCommand extends Command
 {
     protected $signature = 'filament-icon-picker:install-icons
                             {--all : Install all available icon packages}
-                            {--list : List all available icon packages}';
+                            {--list : List all available icon packages}
+                            {--no-config : Skip updating the config file}';
 
     protected $description = 'Install icon packages for Filament Icon Picker';
 
     /**
-     * @var array<string, array{package: string, description: string, icons: string, prefix: string}>
+     * @var array<string, array{package: string, description: string, icons: string, sets: array<string>}>
      */
     protected array $iconPackages = [
         'heroicons' => [
             'package' => 'blade-ui-kit/blade-heroicons',
             'description' => 'Heroicons by Tailwind CSS',
             'icons' => '~1,300',
-            'prefix' => 'heroicon-*',
+            'sets' => ['heroicon'],
         ],
         'fontawesome' => [
             'package' => 'owenvoke/blade-fontawesome',
             'description' => 'Font Awesome (Solid, Regular, Brands)',
             'icons' => '~2,800',
-            'prefix' => 'fas-*, far-*, fab-*',
+            'sets' => ['fontawesome-solid', 'fontawesome-regular', 'fontawesome-brands'],
         ],
         'phosphor' => [
             'package' => 'codeat3/blade-phosphor-icons',
             'description' => 'Phosphor Icons',
             'icons' => '~9,000',
-            'prefix' => 'phosphor-*',
+            'sets' => ['phosphor'],
         ],
         'material' => [
             'package' => 'codeat3/blade-google-material-design-icons',
             'description' => 'Google Material Design',
             'icons' => '~10,000',
-            'prefix' => 'gmdi-*',
+            'sets' => ['gmdi'],
         ],
         'tabler' => [
             'package' => 'blade-ui-kit/blade-tabler-icons',
             'description' => 'Tabler Icons',
             'icons' => '~4,400',
-            'prefix' => 'tabler-*',
+            'sets' => ['tabler'],
         ],
         'lucide' => [
             'package' => 'mallardduck/blade-lucide-icons',
             'description' => 'Lucide Icons',
             'icons' => '~1,400',
-            'prefix' => 'lucide-*',
+            'sets' => ['lucide'],
         ],
         'bootstrap' => [
             'package' => 'codeat3/blade-bootstrap-icons',
             'description' => 'Bootstrap Icons',
             'icons' => '~2,000',
-            'prefix' => 'bi-*',
+            'sets' => ['bi'],
         ],
         'remix' => [
             'package' => 'codeat3/blade-remix-icon',
             'description' => 'Remix Icons',
             'icons' => '~2,800',
-            'prefix' => 'remix-*',
+            'sets' => ['remix'],
         ],
     ];
 
     public function handle(): int
     {
+        $this->displayBanner();
+
         if ($this->option('list')) {
             return $this->listPackages();
         }
@@ -87,102 +91,164 @@ class InstallIconsCommand extends Command
         return $this->interactiveInstall();
     }
 
-    protected function listPackages(): int
+    protected function displayBanner(): void
     {
         $this->newLine();
-        info('Available Icon Packages for Filament Icon Picker');
+        $this->line('<fg=cyan>╔══════════════════════════════════════════════════════════════╗</>');
+        $this->line('<fg=cyan>║</>                                                              <fg=cyan>║</>');
+        $this->line('<fg=cyan>║</>   🎨  <fg=white;options=bold>Filament Icon Picker</> - Icon Installer                 <fg=cyan>║</>');
+        $this->line('<fg=cyan>║</>                                                              <fg=cyan>║</>');
+        $this->line('<fg=cyan>╚══════════════════════════════════════════════════════════════╝</>');
+        $this->newLine();
+    }
+
+    protected function listPackages(): int
+    {
+        info('📦 Available Icon Packages');
         $this->newLine();
 
         $rows = [];
         foreach ($this->iconPackages as $key => $info) {
             $installed = $this->isInstalled($info['package']);
             $rows[] = [
+                $installed ? '✅' : '⬜',
                 ucfirst($key),
-                $info['package'],
                 $info['icons'],
-                $info['prefix'],
-                $installed ? '✅ Installed' : '❌ Not installed',
+                implode(', ', $info['sets']),
+                $installed ? 'Installed' : 'Not installed',
             ];
         }
 
         table(
-            headers: ['Name', 'Package', 'Icons', 'Prefix', 'Status'],
+            headers: ['', 'Name', 'Icons', 'Prefixes', 'Status'],
             rows: $rows
         );
 
         $this->newLine();
-        note('To install packages, run: php artisan filament-icon-picker:install-icons');
+        note('Run "php artisan filament-icon-picker:install-icons" to install packages interactively.');
 
         return self::SUCCESS;
     }
 
     protected function installAll(): int
     {
-        $packages = array_column($this->iconPackages, 'package');
-        $packagesToInstall = array_filter($packages, fn ($p) => ! $this->isInstalled($p));
+        $packagesToInstall = [];
+        $allSets = [];
+
+        foreach ($this->iconPackages as $info) {
+            if (! $this->isInstalled($info['package'])) {
+                $packagesToInstall[] = $info['package'];
+            }
+            $allSets = array_merge($allSets, $info['sets']);
+        }
 
         if (empty($packagesToInstall)) {
-            info('All icon packages are already installed!');
+            info('✅ All icon packages are already installed!');
+            $this->updateConfigIfNeeded($allSets);
 
             return self::SUCCESS;
         }
 
-        return $this->installPackages($packagesToInstall);
+        $result = $this->installPackages($packagesToInstall);
+
+        if ($result === self::SUCCESS) {
+            $this->updateConfigIfNeeded($allSets);
+        }
+
+        return $result;
     }
 
     protected function interactiveInstall(): int
     {
-        $this->newLine();
-        info('🎨 Filament Icon Picker - Install Icons');
-        $this->newLine();
-
+        // Build options with visual indicators
         $options = [];
-        $defaults = [];
+        $installed = [];
 
         foreach ($this->iconPackages as $key => $info) {
-            $installed = $this->isInstalled($info['package']);
+            $isInstalled = $this->isInstalled($info['package']);
 
-            if ($installed) {
+            if ($isInstalled) {
+                $installed[$key] = $info;
+
                 continue;
             }
 
-            $options[$info['package']] = sprintf(
-                '%s - %s (%s icons)',
+            $options[$key] = sprintf(
+                '%-12s %s (%s)',
                 ucfirst($key),
                 $info['description'],
                 $info['icons']
             );
+        }
 
-            if ($key === 'heroicons') {
-                $defaults[] = $info['package'];
+        // Show already installed packages
+        if (! empty($installed)) {
+            $this->line('<fg=green>✅ Already installed:</>');
+            foreach ($installed as $key => $info) {
+                $this->line("   <fg=gray>• {$key} - {$info['icons']} icons</>");
             }
+            $this->newLine();
         }
 
         if (empty($options)) {
-            info('All icon packages are already installed!');
+            info('🎉 All icon packages are already installed!');
 
             return self::SUCCESS;
         }
 
-        $packages = multiselect(
-            label: 'Select icon packages to install',
+        // Show selection prompt
+        $this->line('<fg=yellow>⬜ Available to install:</>');
+        $this->newLine();
+
+        $selected = multiselect(
+            label: 'Select packages to install (Space to toggle, Enter to confirm)',
             options: $options,
-            default: $defaults,
-            hint: 'Space to select, Enter to confirm',
-            scroll: 10
+            default: [],
+            hint: '↑↓ Navigate  •  Space Select  •  Enter Confirm',
+            scroll: 10,
+            required: false
         );
 
-        if (empty($packages)) {
-            warning('No packages selected.');
+        if (empty($selected)) {
+            warning('No packages selected. Exiting.');
 
             return self::SUCCESS;
         }
 
-        if (! confirm('Install ' . count($packages) . ' package(s)?')) {
+        // Show summary
+        $this->newLine();
+        $this->line('<fg=white;options=bold>📋 Installation Summary:</>');
+        $this->newLine();
+
+        $packagesToInstall = [];
+        $setsToAdd = [];
+
+        foreach ($selected as $key) {
+            $info = $this->iconPackages[$key];
+            $packagesToInstall[] = $info['package'];
+            $setsToAdd = array_merge($setsToAdd, $info['sets']);
+
+            $this->line("   <fg=cyan>▸</> {$info['package']} <fg=gray>({$info['icons']} icons)</>");
+        }
+
+        $this->newLine();
+
+        if (! confirm('Proceed with installation?', true)) {
             return self::SUCCESS;
         }
 
-        return $this->installPackages($packages);
+        $result = $this->installPackages($packagesToInstall);
+
+        if ($result === self::SUCCESS && ! $this->option('no-config')) {
+            // Add already installed sets
+            foreach ($installed as $info) {
+                $setsToAdd = array_merge($setsToAdd, $info['sets']);
+            }
+
+            $this->updateConfigIfNeeded($setsToAdd);
+        }
+
+        return $result;
     }
 
     protected function isInstalled(string $package): bool
@@ -195,7 +261,7 @@ class InstallIconsCommand extends Command
 
         $content = file_get_contents($composerLock);
 
-        return str_contains($content, '"name": "' . $package . '"');
+        return str_contains($content, '"name": "'.$package.'"');
     }
 
     /**
@@ -205,6 +271,7 @@ class InstallIconsCommand extends Command
     {
         $this->newLine();
         $failed = [];
+        $successful = [];
 
         foreach ($packages as $package) {
             $result = spin(
@@ -215,32 +282,104 @@ class InstallIconsCommand extends Command
 
                     return $code;
                 },
-                message: "Installing {$package}..."
+                message: "📦 Installing {$package}..."
             );
 
             if ($result !== 0) {
                 $failed[] = $package;
-                $this->error("✗ Failed to install {$package}");
+                $this->line("   <fg=red>✗</> Failed: {$package}");
             } else {
-                $this->info("✓ Installed {$package}");
+                $successful[] = $package;
+                $this->line("   <fg=green>✓</> Installed: {$package}");
             }
         }
 
         $this->newLine();
 
         if (! empty($failed)) {
-            warning('Some packages failed to install. Try manually:');
+            warning('⚠️  Some packages failed to install:');
             foreach ($failed as $package) {
-                $this->line("  composer require {$package}");
+                $this->line("   composer require {$package}");
             }
 
             return self::FAILURE;
         }
 
-        info('✅ All packages installed successfully!');
-        $this->newLine();
-        note('Run "php artisan icons:cache" to cache icons for better performance.');
-
         return self::SUCCESS;
+    }
+
+    /**
+     * @param  array<string>  $sets
+     */
+    protected function updateConfigIfNeeded(array $sets): void
+    {
+        if ($this->option('no-config')) {
+            return;
+        }
+
+        $configPath = config_path('filament-icon-picker.php');
+
+        // Check if config is published
+        if (! File::exists($configPath)) {
+            $this->newLine();
+
+            if (confirm('📝 Publish the config file to customize allowed icon sets?', true)) {
+                $this->call('vendor:publish', [
+                    '--tag' => 'filament-icon-picker-config',
+                ]);
+            }
+        }
+
+        // Update the config with the installed sets
+        if (File::exists($configPath)) {
+            $this->updateAllowedSets($configPath, $sets);
+        }
+
+        $this->displaySuccessMessage();
+    }
+
+    /**
+     * @param  array<string>  $sets
+     */
+    protected function updateAllowedSets(string $configPath, array $sets): void
+    {
+        $content = File::get($configPath);
+
+        // Check if allowed_sets is empty (default)
+        if (preg_match("/'allowed_sets'\s*=>\s*\[\s*\]/", $content)) {
+            // Config has empty allowed_sets, ask if user wants to restrict
+            $this->newLine();
+            note('Your config has "allowed_sets" set to empty array (shows all installed icons).');
+
+            if (confirm('Would you like to restrict to only the packages you just installed?', false)) {
+                $setsString = "['".implode("', '", array_unique($sets))."']";
+                $newContent = preg_replace(
+                    "/'allowed_sets'\s*=>\s*\[\s*\]/",
+                    "'allowed_sets' => {$setsString}",
+                    $content
+                );
+
+                File::put($configPath, $newContent);
+                info('✅ Config updated with selected icon sets.');
+            }
+        }
+    }
+
+    protected function displaySuccessMessage(): void
+    {
+        $this->newLine();
+        $this->line('<fg=green>╔══════════════════════════════════════════════════════════════╗</>');
+        $this->line('<fg=green>║</>                                                              <fg=green>║</>');
+        $this->line('<fg=green>║</>   ✅  <fg=white;options=bold>Installation Complete!</>                                  <fg=green>║</>');
+        $this->line('<fg=green>║</>                                                              <fg=green>║</>');
+        $this->line('<fg=green>║</>   <fg=yellow>Next steps:</>                                               <fg=green>║</>');
+        $this->line('<fg=green>║</>                                                              <fg=green>║</>');
+        $this->line('<fg=green>║</>   1. Register the plugin in your PanelProvider               <fg=green>║</>');
+        $this->line('<fg=green>║</>   2. Add views path to your Tailwind config                  <fg=green>║</>');
+        $this->line('<fg=green>║</>   3. Run: npm run build                                      <fg=green>║</>');
+        $this->line('<fg=green>║</>   4. Run: php artisan icons:cache                            <fg=green>║</>');
+        $this->line('<fg=green>║</>                                                              <fg=green>║</>');
+        $this->line('<fg=green>╚══════════════════════════════════════════════════════════════╝</>');
+        $this->newLine();
     }
 }

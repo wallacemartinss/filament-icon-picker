@@ -8,7 +8,7 @@ use Closure;
 use Filament\Forms\Components\Field;
 use Wallacemartinss\FilamentIconPicker\IconSetManager;
 
-class IconPicker extends Field
+class IconPickerField extends Field
 {
     protected string $view = 'filament-icon-picker::forms.components.icon-picker';
 

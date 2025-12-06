@@ -6,7 +6,7 @@ namespace Wallacemartinss\FilamentIconPicker\Tables\Columns;
 
 use Filament\Tables\Columns\Column;
 
-class IconColumn extends Column
+class IconPickerColumn extends Column
 {
     protected string $view = 'filament-icon-picker::tables.columns.icon-column';
 
