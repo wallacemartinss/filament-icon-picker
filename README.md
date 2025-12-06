@@ -37,14 +37,17 @@ composer require wallacemartinss/filament-icon-picker
 
 ### Step 2: Install icon packages (Interactive)
 
-After installation, you'll be prompted to select which icon packages to install:
+You need at least one icon package to use the Icon Picker. Use the interactive installer:
+
+```bash
+php artisan filament-icon-picker:install-icons
+```
+
+This will show you an interactive menu to select which icon packages to install:
 
 ```
-╔══════════════════════════════════════════════════════════════╗
-║   🎨  Filament Icon Picker - Post Installation              ║
-╚══════════════════════════════════════════════════════════════╝
+🎨 Filament Icon Picker - Install Icons
 
-? Would you like to install icon packages now? (yes/no)
 ? Select icon packages to install:
   ● Heroicons - Heroicons by Tailwind CSS (~1,300 icons)
   ○ Fontawesome - Font Awesome (Solid, Regular, Brands) (~2,800 icons)
@@ -54,10 +57,20 @@ After installation, you'll be prompted to select which icon packages to install:
   ○ Lucide - Lucide Icons (~1,400 icons)
 ```
 
-Or install icon packages manually:
+**Other options:**
 
 ```bash
-# Heroicons (recommended, included with Filament)
+# List available packages and their status
+php artisan filament-icon-picker:install-icons --list
+
+# Install all icon packages at once
+php artisan filament-icon-picker:install-icons --all
+```
+
+**Or install manually via Composer:**
+
+```bash
+# Heroicons (recommended)
 composer require blade-ui-kit/blade-heroicons
 
 # Font Awesome (2800+ icons)
@@ -74,19 +87,6 @@ composer require blade-ui-kit/blade-tabler-icons
 
 # Lucide Icons (1400+ icons)
 composer require mallardduck/blade-lucide-icons
-```
-
-You can also install icons later using the artisan command:
-
-```bash
-# Interactive installation
-php artisan filament-icon-picker:install-icons
-
-# List available packages
-php artisan filament-icon-picker:install-icons --list
-
-# Install all packages
-php artisan filament-icon-picker:install-icons --all
 ```
 
 See all available icon packages at [Blade Icons](https://blade-ui-kit.com/blade-icons#icon-packages).

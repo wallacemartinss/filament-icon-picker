@@ -59,11 +59,6 @@
             ]
         }
     },
-    "scripts": {
-        "post-autoload-dump": [
-            "@php artisan filament-icon-picker:post-install --ansi || true"
-        ]
-    },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "config": {

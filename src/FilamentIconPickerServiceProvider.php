@@ -7,7 +7,6 @@ namespace Wallacemartinss\FilamentIconPicker;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 use Wallacemartinss\FilamentIconPicker\Commands\InstallIconsCommand;
-use Wallacemartinss\FilamentIconPicker\Commands\PostInstallCommand;
 
 class FilamentIconPickerServiceProvider extends PackageServiceProvider
 {
@@ -22,7 +21,6 @@ class FilamentIconPickerServiceProvider extends PackageServiceProvider
             ->hasTranslations()
             ->hasRoute('web')
             ->hasCommands([
-                PostInstallCommand::class,
                 InstallIconsCommand::class,
             ]);
     }
