@@ -69,7 +69,7 @@ class InstallIconsCommand extends Command
             'sets' => ['bi'],
         ],
         'remix' => [
-            'package' => 'codeat3/blade-remix-icon',
+            'package' => 'andreiio/blade-remix-icon',
             'description' => 'Remix Icons',
             'icons' => '~2,800',
             'sets' => ['remix'],
@@ -183,7 +183,7 @@ class InstallIconsCommand extends Command
 
         // Show already installed packages
         if (! empty($installed)) {
-            $this->line('<fg=green>✅ Already installed:</>');
+            $this->line('<fg=green> Already installed:</>');
             foreach ($installed as $key => $info) {
                 $this->line("   <fg=gray>• {$key} - {$info['icons']} icons</>");
             }
@@ -191,7 +191,7 @@ class InstallIconsCommand extends Command
         }
 
         if (empty($options)) {
-            info('🎉 All icon packages are already installed!');
+            info('All icon packages are already installed!');
 
             return self::SUCCESS;
         }
@@ -261,7 +261,7 @@ class InstallIconsCommand extends Command
 
         $content = file_get_contents($composerLock);
 
-        return str_contains($content, '"name": "'.$package.'"');
+        return str_contains($content, '"name": "' . $package . '"');
     }
 
     /**
@@ -282,7 +282,7 @@ class InstallIconsCommand extends Command
 
                     return $code;
                 },
-                message: "📦 Installing {$package}..."
+                message: "Installing {$package}..."
             );
 
             if ($result !== 0) {
@@ -297,7 +297,7 @@ class InstallIconsCommand extends Command
         $this->newLine();
 
         if (! empty($failed)) {
-            warning('⚠️  Some packages failed to install:');
+            warning('Some packages failed to install:');
             foreach ($failed as $package) {
                 $this->line("   composer require {$package}");
             }
@@ -323,7 +323,7 @@ class InstallIconsCommand extends Command
         if (! File::exists($configPath)) {
             $this->newLine();
 
-            if (confirm('📝 Publish the config file to customize allowed icon sets?', true)) {
+            if (confirm('Publish the config file to customize allowed icon sets?', true)) {
                 $this->call('vendor:publish', [
                     '--tag' => 'filament-icon-picker-config',
                 ]);
@@ -352,7 +352,7 @@ class InstallIconsCommand extends Command
             note('Your config has "allowed_sets" set to empty array (shows all installed icons).');
 
             if (confirm('Would you like to restrict to only the packages you just installed?', false)) {
-                $setsString = "['".implode("', '", array_unique($sets))."']";
+                $setsString = "['" . implode("', '", array_unique($sets)) . "']";
                 $newContent = preg_replace(
                     "/'allowed_sets'\s*=>\s*\[\s*\]/",
                     "'allowed_sets' => {$setsString}",
@@ -360,7 +360,7 @@ class InstallIconsCommand extends Command
                 );
 
                 File::put($configPath, $newContent);
-                info('✅ Config updated with selected icon sets.');
+                info('Config updated with selected icon sets.');
             }
         }
     }
