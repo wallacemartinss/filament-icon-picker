@@ -243,4 +243,23 @@ class IconSetManager
             Cache::forget('filament-icon-picker:icons:' . md5(serialize([$set])));
         }
     }
+
+    /**
+     * Get icons for a specific set.
+     *
+     * @return array<string>
+     */
+    public function getIconsForSet(string $setName): array
+    {
+        $sets = $this->getSets();
+
+        if (! isset($sets[$setName])) {
+            return [];
+        }
+
+        $setConfig = $sets[$setName];
+        $icons = $this->getIconsFromSet($setName, $setConfig);
+
+        return $icons->pluck('name')->toArray();
+    }
 }

@@ -1,0 +1,13 @@
+# Generated enum files - these are created by the generate-enums command
+# and are specific to each installation's icon packages
+Heroicons.php
+GoogleMaterialDesignIcons.php
+PhosphorIcons.php
+FontawesomeBrands.php
+FontawesomeRegular.php
+FontawesomeSolid.php
+Filament.php
+IconEnums.php
+
+# Keep Icon.php as it's the static helper class
+!Icon.php

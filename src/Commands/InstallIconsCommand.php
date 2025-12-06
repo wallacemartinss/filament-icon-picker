@@ -18,7 +18,9 @@ class InstallIconsCommand extends Command
     protected $signature = 'filament-icon-picker:install-icons
                             {--all : Install all available icon packages}
                             {--list : List all available icon packages}
-                            {--no-config : Skip updating the config file}';
+                            {--no-config : Skip updating the config file}
+                            {--no-enums : Skip generating icon enums}
+                            {--no-facade : Skip generating IconEnums facade}';
 
     protected $description = 'Install icon packages for Filament Icon Picker';
 
@@ -330,6 +332,9 @@ class InstallIconsCommand extends Command
             $this->updateAllowedSets($configPath, $sets);
         }
 
+        // Generate icon enums
+        $this->generateIconEnums($sets);
+
         $this->displaySuccessMessage();
     }
 
@@ -400,5 +405,26 @@ class InstallIconsCommand extends Command
         $this->line('<fg=green>║</>                                                              <fg=green>║</>');
         $this->line('<fg=green>╚══════════════════════════════════════════════════════════════╝</>');
         $this->newLine();
+    }
+
+    /**
+     * Generate icon enums for the installed sets.
+     *
+     * @param  array<string>  $sets
+     */
+    protected function generateIconEnums(array $sets): void
+    {
+        if ($this->option('no-enums')) {
+            return;
+        }
+
+        $this->newLine();
+        info('🔧 Generating icon enums...');
+
+        $this->call('filament-icon-picker:generate-enums', [
+            '--all' => true,
+            '--with-facade' => ! $this->option('no-facade'),
+            '--no-facade' => $this->option('no-facade'),
+        ]);
     }
 }

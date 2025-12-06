@@ -126,6 +126,55 @@ php artisan optimize:clear
 php artisan icons:cache
 ```
 
+### Icon Enums (Auto-generated)
+
+When you install icon packages using `php artisan filament-icon-picker:install-icons`, **PHP Enums are automatically generated** for type-safe icon usage:
+
+```php
+use Wallacemartinss\FilamentIconPicker\Enums\Heroicons;
+use Wallacemartinss\FilamentIconPicker\Enums\GoogleMaterialDesignIcons;
+use Wallacemartinss\FilamentIconPicker\Enums\PhosphorIcons;
+
+// In navigation icon (with full autocomplete!):
+protected static string|BackedEnum|null $navigationIcon = GoogleMaterialDesignIcons::AccountCircle;
+
+// In actions:
+Action::make('star')->icon(Heroicons::OutlinedStar)
+
+// In pages:
+public static function getNavigationIcon(): ?string
+{
+    return PhosphorIcons::WhatsappLogoDuotone->value;
+}
+```
+
+You can also regenerate enums manually:
+
+```bash
+php artisan filament-icon-picker:generate-enums --all
+```
+
+#### Icon Helper (No Generation Needed)
+
+For dynamic icon usage without generating enums, use the `Icon` helper:
+
+```php
+use Wallacemartinss\FilamentIconPicker\Enums\Icon;
+
+// Navigation icon:
+public static function getNavigationIcon(): ?string
+{
+    return Icon::material('account-circle');
+}
+
+// With variants:
+Icon::heroicon('users', 'outlined')      // heroicon-o-users
+Icon::heroicon('users', 'solid')         // heroicon-s-users
+Icon::phosphor('whatsapp-logo', 'duotone') // phosphor-whatsapp-logo-duotone
+Icon::fontawesome('heart', 'solid')      // fas-heart
+Icon::fontawesome('github', 'brands')    // fab-github
+```
+
 
 
 ## Usage
@@ -202,6 +251,73 @@ public static function infolist(Infolist $infolist): Infolist
                 ->label('Icon'),
         ]);
 }
+```
+
+### Using Icon Enums
+
+After generating enums with `php artisan filament-icon-picker:generate-enums`, you can use them anywhere in Filament:
+
+#### Navigation Icons
+
+```php
+use Wallacemartinss\FilamentIconPicker\Enums\Heroicons;
+use Wallacemartinss\FilamentIconPicker\Enums\GoogleMaterialDesignIcons;
+
+class UserResource extends Resource
+{
+    protected static string|BackedEnum|null $navigationIcon = GoogleMaterialDesignIcons::AccountCircle;
+}
+```
+
+#### Dynamic Navigation Icon
+
+```php
+use Wallacemartinss\FilamentIconPicker\Enums\PhosphorIcons;
+use Wallacemartinss\FilamentIconPicker\Enums\Icon;
+
+// Using generated enum:
+public static function getNavigationIcon(): ?string
+{
+    return PhosphorIcons::WhatsappLogoDuotone->value;
+}
+
+// Or using Icon helper (no generation needed):
+public static function getNavigationIcon(): ?string
+{
+    return Icon::phosphor('whatsapp-logo', 'duotone');
+}
+```
+
+#### Actions
+
+```php
+use Wallacemartinss\FilamentIconPicker\Enums\Heroicons;
+
+Action::make('edit')
+    ->icon(Heroicons::OutlinedPencil)
+
+Action::make('delete')
+    ->icon(Heroicons::OutlinedTrash)
+```
+
+#### Enum Methods
+
+Each generated enum includes helpful methods:
+
+```php
+use Wallacemartinss\FilamentIconPicker\Enums\Heroicons;
+
+// Get icon value
+Heroicons::OutlinedStar->value; // 'heroicon-o-star'
+
+// Get all options (useful for selects)
+Heroicons::options(); // ['OutlinedStar' => 'heroicon-o-star', ...]
+
+// Search icons
+Heroicons::search('star'); // Returns matching cases
+
+// Works with Filament's ScalableIcon interface
+Heroicons::OutlinedStar->getIconForSize(IconSize::Medium);
 ```
 
 ## Configuration

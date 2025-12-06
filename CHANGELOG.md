@@ -4,6 +4,28 @@ All notable changes to `filament-icon-picker` will be documented in this file.
 
 ## [Unreleased]
 
+## [1.3.0] - 2025-12-06
+
+### Added
+- `filament-icon-picker:generate-enums` command to generate PHP Enums for icon sets
+- Generated enums in `Wallacemartinss\FilamentIconPicker\Enums` namespace
+- Enums implement `Filament\Support\Contracts\ScalableIcon` interface
+- Support for using icons as `BackedEnum` in navigation, actions, and pages
+- `Icon` helper class for dynamic icon creation without enum generation
+- `IconEnums` facade for quick access to generated enums
+- `--all` option to generate enums for all icon sets
+- `--path` option to customize enum output directory
+- `--with-facade` and `--no-facade` options for facade generation control
+- `--no-enums` and `--no-facade` options in install command
+- Enum methods: `options()`, `search()`, `getIconForSize()`, `toString()`
+- PHP reserved words validation (class, array, etc.) for enum case names
+
+### Changed
+- Enums are now automatically generated after package installation (no prompts)
+- Enums namespace changed from `App\Enums\Icons` to `Wallacemartinss\FilamentIconPicker\Enums`
+- Updated README with comprehensive Icon Enums documentation
+- Added usage examples for navigation icons, actions, and dynamic icons
+
 ## [1.2.0] - 2025-12-06
 
 ### Added
