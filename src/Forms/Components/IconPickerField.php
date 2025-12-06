@@ -77,7 +77,24 @@ class IconPickerField extends Field
 
     public function getAllowedSets(): ?array
     {
-        return $this->evaluate($this->allowedSets);
+        $componentSets = $this->evaluate($this->allowedSets);
+        $configSets = config('filament-icon-picker.allowed_sets', []);
+
+        // If component has specific sets, use those (intersected with config if config is set)
+        if (is_array($componentSets) && ! empty($componentSets)) {
+            if (! empty($configSets)) {
+                return array_values(array_intersect($componentSets, $configSets));
+            }
+
+            return $componentSets;
+        }
+
+        // Otherwise use config sets
+        if (! empty($configSets)) {
+            return $configSets;
+        }
+
+        return null;
     }
 
     public function placeholder(string|Closure|null $placeholder): static

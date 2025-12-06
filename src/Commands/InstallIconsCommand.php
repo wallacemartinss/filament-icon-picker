@@ -30,7 +30,7 @@ class InstallIconsCommand extends Command
             'package' => 'blade-ui-kit/blade-heroicons',
             'description' => 'Heroicons by Tailwind CSS',
             'icons' => '~1,300',
-            'sets' => ['heroicon'],
+            'sets' => ['heroicons'],
         ],
         'fontawesome' => [
             'package' => 'owenvoke/blade-fontawesome',
@@ -42,13 +42,13 @@ class InstallIconsCommand extends Command
             'package' => 'codeat3/blade-phosphor-icons',
             'description' => 'Phosphor Icons',
             'icons' => '~9,000',
-            'sets' => ['phosphor'],
+            'sets' => ['phosphor-icons'],
         ],
         'material' => [
             'package' => 'codeat3/blade-google-material-design-icons',
             'description' => 'Google Material Design',
             'icons' => '~10,000',
-            'sets' => ['gmdi'],
+            'sets' => ['google-material-design-icons'],
         ],
         'tabler' => [
             'package' => 'secondnetwork/blade-tabler-icons',
@@ -66,7 +66,7 @@ class InstallIconsCommand extends Command
             'package' => 'davidhsianturi/blade-bootstrap-icons',
             'description' => 'Bootstrap Icons',
             'icons' => '~2,000',
-            'sets' => ['bi'],
+            'sets' => ['bootstrap-icons'],
         ],
         'remix' => [
             'package' => 'andreiio/blade-remix-icon',
