@@ -26,7 +26,7 @@ class IconPickerField extends Field
     {
         parent::setUp();
 
-        $this->placeholder(fn(): string => __('filament-icon-picker::icon-picker.placeholder'));
+        $this->placeholder(fn (): string => __('filament-icon-picker::icon-picker.placeholder'));
     }
 
     public function modalSize(string|Closure|null $size): static

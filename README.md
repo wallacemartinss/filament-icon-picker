@@ -238,6 +238,88 @@ public static function table(Table $table): Table
 }
 ```
 
+#### With Size
+
+```php
+IconPickerColumn::make('icon')
+    ->size('lg') // xs, sm, md, lg, xl, 2xl
+
+// Or use shortcut methods:
+IconPickerColumn::make('icon')->extraSmall()  // xs
+IconPickerColumn::make('icon')->small()       // sm
+IconPickerColumn::make('icon')->medium()      // md (default)
+IconPickerColumn::make('icon')->large()       // lg
+IconPickerColumn::make('icon')->extraLarge()  // xl
+```
+
+#### With Color
+
+```php
+IconPickerColumn::make('icon')
+    ->color('success') // primary, secondary, success, warning, danger, info
+
+// Or use shortcut methods:
+IconPickerColumn::make('icon')->primary()
+IconPickerColumn::make('icon')->success()
+IconPickerColumn::make('icon')->warning()
+IconPickerColumn::make('icon')->danger()
+IconPickerColumn::make('icon')->info()
+
+// Or use CSS color values:
+IconPickerColumn::make('icon')->color('#ff5500')
+IconPickerColumn::make('icon')->color('rgb(255, 85, 0)')
+IconPickerColumn::make('icon')->color('purple')
+
+// Or use custom Tailwind classes:
+IconPickerColumn::make('icon')->color('text-purple-500')
+```
+
+#### Dynamic Color (Based on Record)
+
+```php
+IconPickerColumn::make('icon')
+    ->color(fn ($record) => match($record->status) {
+        'active' => 'success',
+        'pending' => 'warning',
+        'inactive' => 'danger',
+        default => 'gray',
+    })
+```
+
+#### With Animation
+
+```php
+IconPickerColumn::make('icon')
+    ->animation('spin') // spin, pulse
+
+// Or use shortcut methods:
+IconPickerColumn::make('icon')->spin()    // Rotation animation
+IconPickerColumn::make('icon')->pulse()   // Pulsing/fading animation
+```
+
+#### Show Icon Name
+
+```php
+IconPickerColumn::make('icon')
+    ->showLabel() // Shows the icon name next to the icon
+```
+
+#### Combining Options
+
+```php
+IconPickerColumn::make('icon')
+    ->large()
+    ->success()
+    ->spin()
+    ->showLabel()
+
+// Dynamic example with all features:
+IconPickerColumn::make('status_icon')
+    ->color(fn ($record) => $record->is_active ? 'success' : 'danger')
+    ->animation(fn ($record) => $record->is_processing ? 'spin' : null)
+    ->size('lg')
+```
+
 ### Infolist Entry
 
 ```php
@@ -251,6 +333,57 @@ public static function infolist(Infolist $infolist): Infolist
                 ->label('Icon'),
         ]);
 }
+```
+
+#### With Size and Color
+
+```php
+IconPickerEntry::make('icon')
+    ->size('xl')
+    ->color('primary')
+
+// Or use shortcut methods:
+IconPickerEntry::make('icon')
+    ->extraLarge()
+    ->danger()
+```
+
+#### Dynamic Color (Based on Record)
+
+```php
+IconPickerEntry::make('icon')
+    ->color(fn ($record) => match($record->status) {
+        'active' => 'success',
+        'pending' => 'warning',
+        'inactive' => 'danger',
+        default => 'gray',
+    })
+```
+
+#### With Animation
+
+```php
+IconPickerEntry::make('icon')
+    ->spin()    // Rotation animation
+    ->pulse()   // Pulsing/fading animation
+```
+
+#### Hide Icon Name
+
+```php
+IconPickerEntry::make('icon')
+    ->showIconName(false) // Hides the icon name, shows only the icon
+```
+
+#### Combining All Features
+
+```php
+IconPickerEntry::make('status_icon')
+    ->extraLarge()
+    ->color(fn ($record) => $record->is_active ? 'success' : 'danger')
+    ->animation(fn ($record) => $record->is_loading ? 'spin' : null)
+    ->showIconName(false)
+```
 ```
 
 ### Using Icon Enums
@@ -455,6 +588,21 @@ Array
 
 1. Clear browser cache with `Ctrl+Shift+R`
 2. Check browser console for JavaScript errors
+
+## Testing
+
+To run the package tests:
+
+```bash
+cd packages/wallacemartinss/filament-icon-picker
+./vendor/bin/phpunit
+```
+
+Or with testdox output:
+
+```bash
+./vendor/bin/phpunit --testdox
+```
 
 ## Changelog
 

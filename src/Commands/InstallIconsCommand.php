@@ -258,7 +258,7 @@ class InstallIconsCommand extends Command
 
         $content = file_get_contents($composerLock);
 
-        return str_contains($content, '"name": "' . $package . '"');
+        return str_contains($content, '"name": "'.$package.'"');
     }
 
     /**
@@ -376,8 +376,8 @@ class InstallIconsCommand extends Command
      */
     protected function writeAllowedSets(string $configPath, string $content, array $sets, string $pattern): void
     {
-        $setsString = "[\n        '" . implode("',\n        '", $sets) . "',\n    ]";
-        $replacement = "'allowed_sets' => " . $setsString;
+        $setsString = "[\n        '".implode("',\n        '", $sets)."',\n    ]";
+        $replacement = "'allowed_sets' => ".$setsString;
 
         $newContent = preg_replace($pattern, $replacement, $content);
 

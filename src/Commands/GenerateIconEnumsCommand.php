@@ -62,7 +62,7 @@ class GenerateIconEnumsCommand extends Command
         }
 
         // Get the package path for generated enums
-        $packagePath = dirname(__DIR__) . '/Enums';
+        $packagePath = dirname(__DIR__).'/Enums';
         $path = $this->option('path') ?? $packagePath;
 
         if (! is_dir($path)) {
@@ -84,7 +84,7 @@ class GenerateIconEnumsCommand extends Command
         }
 
         $this->newLine();
-        info('✅ Generated ' . count($generated) . ' enum(s):');
+        info('✅ Generated '.count($generated).' enum(s):');
 
         foreach ($generated as $enum) {
             $this->line("   • Wallacemartinss\\FilamentIconPicker\\Enums\\{$enum}");
@@ -97,19 +97,19 @@ class GenerateIconEnumsCommand extends Command
         $firstEnum = $generated[0] ?? 'Heroicons';
         $this->line("   use Wallacemartinss\\FilamentIconPicker\\Enums\\{$firstEnum};");
         $this->newLine();
-        $this->line("   // In navigation icon:");
+        $this->line('   // In navigation icon:');
         $this->line("   protected static string|BackedEnum|null \$navigationIcon = {$firstEnum}::Star;");
         $this->newLine();
-        $this->line("   // In actions:");
+        $this->line('   // In actions:');
         $this->line("   Action::make('star')->icon({$firstEnum}::Star)");
         $this->newLine();
-        $this->line("   // Get icon name as string:");
+        $this->line('   // Get icon name as string:');
         $this->line("   {$firstEnum}::Star->value // Returns full icon name");
         $this->newLine();
         $this->newLine();
         info('💡 Or use the Icon helper class (no generation needed):');
         $this->newLine();
-        $this->line("   use Wallacemartinss\\FilamentIconPicker\\Enums\\Icon;");
+        $this->line('   use Wallacemartinss\\FilamentIconPicker\\Enums\\Icon;');
         $this->newLine();
         $this->line("   Icon::heroicon('users', 'outlined')");
         $this->line("   Icon::material('account-circle')");
@@ -124,7 +124,7 @@ class GenerateIconEnumsCommand extends Command
             $this->newLine();
             info('✅ Generated IconEnums facade!');
             $this->newLine();
-            $this->line("   use Wallacemartinss\\FilamentIconPicker\\Enums\\IconEnums;");
+            $this->line('   use Wallacemartinss\\FilamentIconPicker\\Enums\\IconEnums;');
             $this->newLine();
             $this->line("   IconEnums::heroicons('star')     // Returns 'heroicon-o-star'");
             $this->line("   IconEnums::phosphorIcons('heart') // Returns 'phosphor-heart'");
@@ -236,7 +236,7 @@ class GenerateIconEnumsCommand extends Command
             ->replace(' ', '')
             ->toString();
 
-        return $prefix . $pascalRest;
+        return $prefix.$pascalRest;
     }
 
     protected function isValidCaseName(string $name): bool

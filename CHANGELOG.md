@@ -4,6 +4,30 @@ All notable changes to `filament-icon-picker` will be documented in this file.
 
 ## [Unreleased]
 
+## [1.4.0] - 2025-12-06
+
+### Added
+- `HasIconAnimation` trait with animation support (spin, pulse)
+- `HasIconColor` trait with semantic color support (primary, success, danger, warning, info)
+- `HasIconSize` trait with size shortcuts (extraSmall, small, medium, large, extraLarge)
+- Animation methods: `animation()`, `spin()`, `pulse()`
+- Color methods: `color()`, `primary()`, `secondary()`, `success()`, `warning()`, `danger()`, `info()`
+- Size methods: `size()`, `extraSmall()`, `small()`, `medium()`, `large()`, `extraLarge()`
+- Support for CSS color values (hex, rgb, named colors)
+- Support for closure-based color and animation (dynamic values based on record)
+- Support for custom Tailwind color classes
+- `showLabel()` method on `IconPickerColumn` to display icon name
+- `showIconName()` method on `IconPickerEntry` to toggle icon name visibility
+- Comprehensive unit tests for all components (69 tests, 147 assertions)
+- PHPUnit configuration for package testing
+- GitHub Actions CI/CD workflow for automated testing
+- Laravel Pint for code style formatting
+
+### Changed
+- Refactored size, color, and animation logic into reusable traits
+- Updated views to support dynamic colors and animations
+- Added `2xl` size option (w-12 h-12)
+
 ## [1.3.0] - 2025-12-06
 
 ### Added

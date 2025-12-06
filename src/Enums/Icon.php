@@ -10,10 +10,10 @@ use Wallacemartinss\FilamentIconPicker\IconSetManager;
 
 /**
  * Dynamic Icon helper that can represent any icon from any installed set.
- * 
+ *
  * This class provides a fluent API for creating icon references without
  * needing to generate enums. It's perfect for dynamic icon usage.
- * 
+ *
  * Usage:
  *   Icon::make('heroicon-o-users')
  *   Icon::heroicon('users', 'outlined')
@@ -42,9 +42,9 @@ class Icon implements ScalableIcon
 
     /**
      * Create a Heroicon.
-     * 
-     * @param string $name Icon name (e.g., 'users', 'star', 'home')
-     * @param string $style 'outlined' (o), 'solid' (s), 'mini' (m), or 'compact' (c)
+     *
+     * @param  string  $name  Icon name (e.g., 'users', 'star', 'home')
+     * @param  string  $style  'outlined' (o), 'solid' (s), 'mini' (m), or 'compact' (c)
      */
     public static function heroicon(string $name, string $style = 'outlined'): static
     {
@@ -61,9 +61,9 @@ class Icon implements ScalableIcon
 
     /**
      * Create a Google Material Design icon.
-     * 
-     * @param string $name Icon name (e.g., 'account-circle', 'dashboard')
-     * @param string|null $variant null, 'o' (outlined), 'r' (round), 's' (sharp), 'tt' (two-tone)
+     *
+     * @param  string  $name  Icon name (e.g., 'account-circle', 'dashboard')
+     * @param  string|null  $variant  null, 'o' (outlined), 'r' (round), 's' (sharp), 'tt' (two-tone)
      */
     public static function material(string $name, ?string $variant = null): static
     {
@@ -74,9 +74,9 @@ class Icon implements ScalableIcon
 
     /**
      * Create a Phosphor icon.
-     * 
-     * @param string $name Icon name (e.g., 'whatsapp-logo', 'heart')
-     * @param string|null $weight null, 'bold', 'duotone', 'fill', 'light', 'thin'
+     *
+     * @param  string  $name  Icon name (e.g., 'whatsapp-logo', 'heart')
+     * @param  string|null  $weight  null, 'bold', 'duotone', 'fill', 'light', 'thin'
      */
     public static function phosphor(string $name, ?string $weight = null): static
     {
@@ -87,9 +87,9 @@ class Icon implements ScalableIcon
 
     /**
      * Create a Font Awesome icon.
-     * 
-     * @param string $name Icon name (e.g., 'user', 'heart')
-     * @param string $style 'solid' (fas), 'regular' (far), 'brands' (fab)
+     *
+     * @param  string  $name  Icon name (e.g., 'user', 'heart')
+     * @param  string  $style  'solid' (fas), 'regular' (far), 'brands' (fab)
      */
     public static function fontawesome(string $name, string $style = 'solid'): static
     {
@@ -197,7 +197,7 @@ class Icon implements ScalableIcon
 
     /**
      * Search for icons by name.
-     * 
+     *
      * @return array<string>
      */
     public static function search(string $query, ?string $set = null): array
@@ -211,7 +211,7 @@ class Icon implements ScalableIcon
 
     /**
      * Get all available icons.
-     * 
+     *
      * @return array<string>
      */
     public static function all(?string $set = null): array

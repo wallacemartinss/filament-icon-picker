@@ -82,13 +82,13 @@ class IconSetManager
      */
     public function getIcons(?array $allowedSets = null): Collection
     {
-        $cacheKey = 'filament-icon-picker:icons:' . md5(serialize($allowedSets));
+        $cacheKey = 'filament-icon-picker:icons:'.md5(serialize($allowedSets));
 
         if (config('filament-icon-picker.cache_icons', true)) {
             return Cache::remember(
                 $cacheKey,
                 config('filament-icon-picker.cache_duration', 86400),
-                fn() => $this->loadIcons($allowedSets)
+                fn () => $this->loadIcons($allowedSets)
             );
         }
 
@@ -149,9 +149,9 @@ class IconSetManager
                     continue;
                 }
 
-                $relativePath = str_replace($path . DIRECTORY_SEPARATOR, '', $file->getPathname());
+                $relativePath = str_replace($path.DIRECTORY_SEPARATOR, '', $file->getPathname());
                 $iconName = str_replace([DIRECTORY_SEPARATOR, '/', '.svg'], ['-', '-', ''], $relativePath);
-                $fullName = $prefix . '-' . $iconName;
+                $fullName = $prefix.'-'.$iconName;
 
                 $icons->push([
                     'name' => $fullName,
@@ -184,7 +184,7 @@ class IconSetManager
         $icons = $this->getIcons($allowedSets);
 
         if ($setFilter) {
-            $icons = $icons->filter(fn($icon) => $icon['set'] === $setFilter);
+            $icons = $icons->filter(fn ($icon) => $icon['set'] === $setFilter);
         }
 
         if (empty($query)) {
@@ -217,7 +217,7 @@ class IconSetManager
             : $this->getIcons($allowedSets);
 
         if ($setFilter && ! $search) {
-            $icons = $icons->filter(fn($icon) => $icon['set'] === $setFilter);
+            $icons = $icons->filter(fn ($icon) => $icon['set'] === $setFilter);
         }
 
         $total = $icons->count();
@@ -236,11 +236,11 @@ class IconSetManager
      */
     public function clearCache(): void
     {
-        Cache::forget('filament-icon-picker:icons:' . md5(serialize(null)));
+        Cache::forget('filament-icon-picker:icons:'.md5(serialize(null)));
 
         $sets = $this->getSetNames();
         foreach ($sets as $set) {
-            Cache::forget('filament-icon-picker:icons:' . md5(serialize([$set])));
+            Cache::forget('filament-icon-picker:icons:'.md5(serialize([$set])));
         }
     }
 

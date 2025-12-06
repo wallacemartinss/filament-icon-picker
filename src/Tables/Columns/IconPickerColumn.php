@@ -4,35 +4,31 @@ declare(strict_types=1);
 
 namespace Wallacemartinss\FilamentIconPicker\Tables\Columns;
 
+use Closure;
 use Filament\Tables\Columns\Column;
+use Wallacemartinss\FilamentIconPicker\Concerns\HasIconAnimation;
+use Wallacemartinss\FilamentIconPicker\Concerns\HasIconColor;
+use Wallacemartinss\FilamentIconPicker\Concerns\HasIconSize;
 
 class IconPickerColumn extends Column
 {
+    use HasIconAnimation;
+    use HasIconColor;
+    use HasIconSize;
+
     protected string $view = 'filament-icon-picker::tables.columns.icon-column';
 
-    protected string $size = 'md';
+    protected bool|Closure $showLabel = false;
 
-    public function size(string $size): static
+    public function showLabel(bool|Closure $show = true): static
     {
-        $this->size = $size;
+        $this->showLabel = $show;
 
         return $this;
     }
 
-    public function getSize(): string
+    public function shouldShowLabel(): bool
     {
-        return $this->size;
-    }
-
-    public function getSizeClasses(): string
-    {
-        return match ($this->size) {
-            'xs' => 'w-4 h-4',
-            'sm' => 'w-5 h-5',
-            'md' => 'w-6 h-6',
-            'lg' => 'w-8 h-8',
-            'xl' => 'w-10 h-10',
-            default => 'w-6 h-6',
-        };
+        return (bool) $this->evaluate($this->showLabel);
     }
 }

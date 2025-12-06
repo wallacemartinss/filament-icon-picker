@@ -6,8 +6,6 @@ namespace Wallacemartinss\FilamentIconPicker;
 
 use Filament\Contracts\Plugin;
 use Filament\Panel;
-use Filament\Support\Assets\Css;
-use Filament\Support\Facades\FilamentAsset;
 
 class FilamentIconPickerPlugin implements Plugin
 {

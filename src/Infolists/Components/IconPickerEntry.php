@@ -4,35 +4,31 @@ declare(strict_types=1);
 
 namespace Wallacemartinss\FilamentIconPicker\Infolists\Components;
 
+use Closure;
 use Filament\Infolists\Components\Entry;
+use Wallacemartinss\FilamentIconPicker\Concerns\HasIconAnimation;
+use Wallacemartinss\FilamentIconPicker\Concerns\HasIconColor;
+use Wallacemartinss\FilamentIconPicker\Concerns\HasIconSize;
 
 class IconPickerEntry extends Entry
 {
+    use HasIconAnimation;
+    use HasIconColor;
+    use HasIconSize;
+
     protected string $view = 'filament-icon-picker::infolists.components.icon-entry';
 
-    protected string $size = 'md';
+    protected bool|Closure $showIconName = true;
 
-    public function size(string $size): static
+    public function showIconName(bool|Closure $show = true): static
     {
-        $this->size = $size;
+        $this->showIconName = $show;
 
         return $this;
     }
 
-    public function getSize(): string
+    public function shouldShowIconName(): bool
     {
-        return $this->size;
-    }
-
-    public function getSizeClasses(): string
-    {
-        return match ($this->size) {
-            'xs' => 'w-4 h-4',
-            'sm' => 'w-5 h-5',
-            'md' => 'w-6 h-6',
-            'lg' => 'w-8 h-8',
-            'xl' => 'w-10 h-10',
-            default => 'w-6 h-6',
-        };
+        return (bool) $this->evaluate($this->showIconName);
     }
 }

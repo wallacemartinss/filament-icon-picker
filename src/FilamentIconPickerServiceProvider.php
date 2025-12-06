@@ -30,7 +30,7 @@ class FilamentIconPickerServiceProvider extends PackageServiceProvider
     public function packageBooted(): void
     {
         $this->app->singleton(IconSetManager::class, function () {
-            return new IconSetManager();
+            return new IconSetManager;
         });
     }
 }
