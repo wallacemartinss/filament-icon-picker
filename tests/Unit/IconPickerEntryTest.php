@@ -157,6 +157,39 @@ final class IconPickerEntryTest extends TestCase
     }
 
     #[Test]
+    public function it_can_set_animation_speed(): void
+    {
+        $entry = IconPickerEntry::make('icon')->pulse()->animationSpeed('1s');
+
+        $this->assertEquals('1s', $entry->getAnimationSpeed());
+        $this->assertStringContainsString('1s', $entry->getAnimationStyle());
+    }
+
+    #[Test]
+    public function it_can_set_speed_via_shortcut(): void
+    {
+        $spinEntry = IconPickerEntry::make('icon')->spin('0.5s');
+        $this->assertEquals('spin', $spinEntry->getAnimation());
+        $this->assertEquals('0.5s', $spinEntry->getAnimationSpeed());
+        $this->assertStringContainsString('0.5s', $spinEntry->getAnimationStyle());
+
+        $pulseEntry = IconPickerEntry::make('icon')->pulse('1s');
+        $this->assertEquals('pulse', $pulseEntry->getAnimation());
+        $this->assertEquals('1s', $pulseEntry->getAnimationSpeed());
+        $this->assertStringContainsString('1s', $pulseEntry->getAnimationStyle());
+    }
+
+    #[Test]
+    public function it_uses_default_speed_when_not_specified(): void
+    {
+        $spinEntry = IconPickerEntry::make('icon')->spin();
+        $this->assertStringContainsString('1s', $spinEntry->getAnimationStyle());
+
+        $pulseEntry = IconPickerEntry::make('icon')->pulse();
+        $this->assertStringContainsString('2s', $pulseEntry->getAnimationStyle());
+    }
+
+    #[Test]
     public function it_can_combine_color_size_and_animation(): void
     {
         $entry = IconPickerEntry::make('icon')

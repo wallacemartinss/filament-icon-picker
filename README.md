@@ -295,6 +295,17 @@ IconPickerColumn::make('icon')
 // Or use shortcut methods:
 IconPickerColumn::make('icon')->spin()    // Rotation animation
 IconPickerColumn::make('icon')->pulse()   // Pulsing/fading animation
+
+// With custom speed (CSS duration format):
+IconPickerColumn::make('icon')->spin('0.5s')   // Fast spin
+IconPickerColumn::make('icon')->spin('3s')    // Slow spin
+IconPickerColumn::make('icon')->pulse('0.5s') // Fast pulse
+IconPickerColumn::make('icon')->pulse('4s')   // Slow pulse
+
+// Or set speed separately:
+IconPickerColumn::make('icon')
+    ->spin()
+    ->animationSpeed('0.3s')
 ```
 
 #### Show Icon Name
@@ -384,6 +395,17 @@ IconPickerEntry::make('icon')
 IconPickerEntry::make('icon')
     ->spin()    // Rotation animation
     ->pulse()   // Pulsing/fading animation
+
+// With custom speed (CSS duration format):
+IconPickerEntry::make('icon')->spin('0.5s')   // Fast spin
+IconPickerEntry::make('icon')->spin('3s')    // Slow spin
+IconPickerEntry::make('icon')->pulse('0.5s') // Fast pulse
+IconPickerEntry::make('icon')->pulse('4s')   // Slow pulse
+
+// Or set speed separately:
+IconPickerEntry::make('icon')
+    ->pulse()
+    ->animationSpeed('1s')
 ```
 
 #### Hide Icon Name

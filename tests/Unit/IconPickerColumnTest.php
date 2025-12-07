@@ -157,6 +157,39 @@ final class IconPickerColumnTest extends TestCase
     }
 
     #[Test]
+    public function it_can_set_animation_speed(): void
+    {
+        $column = IconPickerColumn::make('icon')->spin()->animationSpeed('0.5s');
+
+        $this->assertEquals('0.5s', $column->getAnimationSpeed());
+        $this->assertStringContainsString('0.5s', $column->getAnimationStyle());
+    }
+
+    #[Test]
+    public function it_can_set_speed_via_shortcut(): void
+    {
+        $spinColumn = IconPickerColumn::make('icon')->spin('0.3s');
+        $this->assertEquals('spin', $spinColumn->getAnimation());
+        $this->assertEquals('0.3s', $spinColumn->getAnimationSpeed());
+        $this->assertStringContainsString('0.3s', $spinColumn->getAnimationStyle());
+
+        $pulseColumn = IconPickerColumn::make('icon')->pulse('0.5s');
+        $this->assertEquals('pulse', $pulseColumn->getAnimation());
+        $this->assertEquals('0.5s', $pulseColumn->getAnimationSpeed());
+        $this->assertStringContainsString('0.5s', $pulseColumn->getAnimationStyle());
+    }
+
+    #[Test]
+    public function it_uses_default_speed_when_not_specified(): void
+    {
+        $spinColumn = IconPickerColumn::make('icon')->spin();
+        $this->assertStringContainsString('1s', $spinColumn->getAnimationStyle());
+
+        $pulseColumn = IconPickerColumn::make('icon')->pulse();
+        $this->assertStringContainsString('2s', $pulseColumn->getAnimationStyle());
+    }
+
+    #[Test]
     public function it_can_combine_color_size_and_animation(): void
     {
         $column = IconPickerColumn::make('icon')
