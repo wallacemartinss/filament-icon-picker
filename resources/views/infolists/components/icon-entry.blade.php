@@ -5,7 +5,7 @@
     $colorStyle = $getColorStyle();
     $animationStyle = $getAnimationStyle();
     $showIconName = $shouldShowIconName();
-    
+
     // Combine styles
     $combinedStyle = trim(($colorStyle ?? '') . ' ' . ($animationStyle ?? ''));
 @endphp

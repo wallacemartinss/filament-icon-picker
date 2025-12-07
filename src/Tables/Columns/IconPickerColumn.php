@@ -20,6 +20,37 @@ class IconPickerColumn extends Column
 
     protected bool|Closure $showLabel = false;
 
+    protected string|Closure|null $icon = null;
+
+    /**
+     * Set a fixed icon (useful when not using a database column).
+     */
+    public function icon(string|Closure|null $icon): static
+    {
+        $this->icon = $icon;
+
+        return $this;
+    }
+
+    public function getIcon(): ?string
+    {
+        return $this->evaluate($this->icon);
+    }
+
+    /**
+     * Get the state - returns the fixed icon if set, otherwise the database value.
+     */
+    public function getState(): mixed
+    {
+        $icon = $this->getIcon();
+
+        if ($icon !== null) {
+            return $icon;
+        }
+
+        return parent::getState();
+    }
+
     public function showLabel(bool|Closure $show = true): static
     {
         $this->showLabel = $show;

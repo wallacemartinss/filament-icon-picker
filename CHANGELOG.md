@@ -4,6 +4,15 @@ All notable changes to `filament-icon-picker` will be documented in this file.
 
 ## [Unreleased]
 
+## [1.4.1] - 2025-12-06
+
+### Added
+- `icon()` method on `IconPickerColumn` and `IconPickerEntry` for fixed/static icons without database
+- Support for closures in `icon()` method for dynamic icons based on record
+
+### Changed
+- Overrode `getState()` method to support fixed icons alongside database values
+
 ## [1.4.0] - 2025-12-06
 
 ### Added

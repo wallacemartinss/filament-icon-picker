@@ -304,6 +304,24 @@ IconPickerColumn::make('icon')
     ->showLabel() // Shows the icon name next to the icon
 ```
 
+#### Fixed Icon (Without Database)
+
+Use the `icon()` method to display a fixed icon without requiring a database column:
+
+```php
+// Static icon
+IconPickerColumn::make('type_indicator')
+    ->icon('heroicon-o-star')
+    ->warning()
+    ->large()
+
+// Dynamic icon based on record
+IconPickerColumn::make('status_indicator')
+    ->icon(fn ($record) => $record->is_premium ? 'heroicon-s-star' : 'heroicon-o-user')
+    ->color(fn ($record) => $record->is_premium ? 'warning' : 'gray')
+    ->animation(fn ($record) => $record->is_featured ? 'pulse' : null)
+```
+
 #### Combining Options
 
 ```php
@@ -373,6 +391,24 @@ IconPickerEntry::make('icon')
 ```php
 IconPickerEntry::make('icon')
     ->showIconName(false) // Hides the icon name, shows only the icon
+```
+
+#### Fixed Icon (Without Database)
+
+Use the `icon()` method to display a fixed icon without requiring a database column:
+
+```php
+// Static icon
+IconPickerEntry::make('badge_icon')
+    ->icon('heroicon-o-badge-check')
+    ->success()
+    ->large()
+    ->showIconName(false)
+
+// Dynamic icon based on record
+IconPickerEntry::make('user_type')
+    ->icon(fn ($record) => $record->is_admin ? 'heroicon-s-shield-check' : 'heroicon-o-user')
+    ->color(fn ($record) => $record->is_admin ? 'danger' : 'primary')
 ```
 
 #### Combining All Features
