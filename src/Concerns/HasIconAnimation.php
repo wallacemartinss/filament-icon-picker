@@ -93,8 +93,8 @@ trait HasIconAnimation
         $speed = $this->getAnimationSpeed();
 
         return match ($animation) {
-            'spin' => 'animation: spin ' . ($speed ?? '1s') . ' linear infinite;',
-            'pulse' => 'animation: pulse ' . ($speed ?? '2s') . ' cubic-bezier(0.4, 0, 0.6, 1) infinite;',
+            'spin' => 'animation: spin '.($speed ?? '1s').' linear infinite;',
+            'pulse' => 'animation: pulse '.($speed ?? '2s').' cubic-bezier(0.4, 0, 0.6, 1) infinite;',
             default => null,
         };
     }
