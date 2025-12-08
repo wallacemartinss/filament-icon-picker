@@ -5,7 +5,18 @@
 
 A beautiful, modern icon picker component for Filament v4, powered by [blade-ui-kit/blade-icons](https://github.com/blade-ui-kit/blade-icons).
 
-![Icon Picker Preview](art/preview.png)
+![Filament Icon Picker](docs/images/principal.png)
+
+## Screenshots
+
+<details>
+<summary>📸 Click to view screenshots</summary>
+
+| | |
+|:---:|:---:|
+| ![Screenshot 1](docs/images/screenshot-01.png) | ![Screenshot 2](docs/images/screenshot-02.png) |
+
+</details>
 
 ## Features
 
