@@ -201,6 +201,7 @@ public static function form(Form $form): Form
         ->schema([
             IconPickerField::make('icon')
                 ->label('Select an Icon')
+                ->searchable()
                 ->required(),
         ]);
 }
