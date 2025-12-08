@@ -59,11 +59,30 @@
         handleSetChange() {
             this.resetAndFetch();
         },
+
+        // Store reference to elements that had inert removed
+        _inertElements: [],
     
         async openModal() {
             this.isOpen = true;
             this.currentPage = 1;
             this.icons = [];
+
+            // Remove inert from our modal container to allow interaction
+            this.$nextTick(() => {
+                const modal = document.querySelector('.fi-icon-picker-modal');
+                if (modal) {
+                    // Remove inert from the modal and all parents
+                    let el = modal;
+                    while (el) {
+                        if (el.hasAttribute('inert')) {
+                            el.removeAttribute('inert');
+                            this._inertElements.push(el);
+                        }
+                        el = el.parentElement;
+                    }
+                }
+            });
     
             await this.fetchIcons();
     
@@ -76,6 +95,12 @@
     
         closeModal() {
             this.isOpen = false;
+
+            // Restore inert to elements that had it
+            this._inertElements.forEach(el => {
+                el.setAttribute('inert', '');
+            });
+            this._inertElements = [];
         },
     
         async resetAndFetch() {
@@ -254,19 +279,23 @@
                     </svg>
                 </span>
             </button>
-        </x-filament::input.wrapper> {{-- Modal --}}
+        </x-filament::input.wrapper>
+
+        {{-- Modal --}}
         <template x-teleport="body">
             <div x-show="isOpen" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0"
                 x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200"
                 x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
-                class="fixed inset-0 z-50 flex min-h-full items-center justify-center overflow-y-auto overflow-x-hidden p-4 transition"
-                style="display: none;" x-on:keydown.escape.window="closeModal()">
+                class="fi-icon-picker-modal fixed inset-0 flex min-h-full items-center justify-center overflow-y-auto overflow-x-hidden p-4 transition"
+                style="display: none; z-index: 999999;"
+                @keydown.escape.stop="closeModal()">
                 {{-- Backdrop --}}
                 <div class="fi-modal-close-overlay fixed inset-0 bg-gray-950/50 dark:bg-gray-950/75"
+                    style="z-index: -1;"
                     x-on:click="closeModal()"></div>
 
                 {{-- Modal Content --}}
-                <div x-show="isOpen" x-transition:enter="ease-out duration-300"
+                <div x-show="isOpen" x-trap="isOpen" x-transition:enter="ease-out duration-300"
                     x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                     x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
                     x-transition:leave="ease-in duration-200"
@@ -394,36 +423,36 @@
             </div>
         </template>
     </div>
+
+    <style>
+        .fi-icon-picker-preview {
+            width: 1.25rem;
+            height: 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .fi-icon-picker-preview svg {
+            width: 100% !important;
+            height: 100% !important;
+            max-width: 100% !important;
+            max-height: 100% !important;
+        }
+
+        .fi-icon-picker-icon {
+            width: 1.5rem;
+            height: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .fi-icon-picker-icon svg {
+            width: 100% !important;
+            height: 100% !important;
+            max-width: 100% !important;
+            max-height: 100% !important;
+        }
+    </style>
 </x-dynamic-component>
-
-<style>
-    .fi-icon-picker-preview {
-        width: 1.25rem;
-        height: 1.25rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .fi-icon-picker-preview svg {
-        width: 100% !important;
-        height: 100% !important;
-        max-width: 100% !important;
-        max-height: 100% !important;
-    }
-
-    .fi-icon-picker-icon {
-        width: 1.5rem;
-        height: 1.5rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .fi-icon-picker-icon svg {
-        width: 100% !important;
-        height: 100% !important;
-        max-width: 100% !important;
-        max-height: 100% !important;
-    }
-</style>

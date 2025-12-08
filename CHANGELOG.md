@@ -4,6 +4,22 @@ All notable changes to `filament-icon-picker` will be documented in this file.
 
 ## [Unreleased]
 
+## [1.4.4] - 2025-12-08
+
+### Fixed
+- Icon Picker modal now works correctly inside Filament action modals (CreateAction, EditAction, etc.)
+- Fixed z-index conflict when Icon Picker is used inside another modal
+- Fixed `inert` attribute conflict with Filament's `x-trap` directive
+- Modal now properly handles focus and keyboard navigation inside nested modals
+- Escape key now correctly closes only the Icon Picker modal without affecting parent modals
+
+## [1.4.3] - 2025-12-07
+
+### Fixed
+- Search input now accepts text input correctly (changed from `type="search"` to `type="text"`)
+- Fixed Alpine.js `x-if` template issue preventing input interaction
+- Optimized API response to include SVG data, reducing HTTP requests per icon
+
 ## [1.4.1] - 2025-12-06
 
 ### Added
