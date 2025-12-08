@@ -14,7 +14,7 @@ A beautiful, modern icon picker component for Filament v4, powered by [blade-ui-
 
 | | |
 |:---:|:---:|
-| ![Screenshot 1](docs/images/screenshot-01.png) | ![Screenshot 2](docs/images/screenshot-02.png) |
+| ![Screenshot 2](docs/images/screenshot-02.png) | ![Screenshot 3](docs/images/screenshot-03.png) |
 
 </details>
 
