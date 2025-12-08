@@ -44,13 +44,20 @@
         endpoint: @js(route('filament-icon-picker.icons')),
     
         init() {
-            this.$watch('search', () => {
-                this.resetAndFetch();
-            });
+            // No watches needed - debounce on x-model handles the delay
+        },
+
+        searchDebounceTimer: null,
     
-            this.$watch('selectedSet', () => {
+        handleSearchInput() {
+            clearTimeout(this.searchDebounceTimer);
+            this.searchDebounceTimer = setTimeout(() => {
                 this.resetAndFetch();
-            });
+            }, 400);
+        },
+
+        handleSetChange() {
+            this.resetAndFetch();
         },
     
         async openModal() {
@@ -141,6 +148,10 @@
     
         selectIcon(icon) {
             this.state = icon.name;
+            // Cache the SVG for the preview
+            if (icon.svg) {
+                this.iconCache[icon.name] = icon.svg;
+            }
             this.closeModal();
         },
     
@@ -175,6 +186,10 @@
                 console.error('Failed to load icon:', iconName);
             }
         },
+    
+        getIconSvg(iconName) {
+            return this.iconCache[iconName] || '';
+        },
     }" wire:ignore class="fi-fo-icon-picker">
         {{-- Trigger Button using Filament's input wrapper structure --}}
         <x-filament::input.wrapper :disabled="$isDisabled" :valid="!$errors->has($statePath)" class="fi-fo-icon-picker-trigger cursor-pointer"
@@ -183,18 +198,33 @@
                 class="flex min-h-9 w-full items-center gap-x-2 rounded-lg py-1.5 ps-3 pe-3 text-start text-sm leading-6 text-gray-950 focus:ring-0 focus:outline-none dark:text-white">
                 {{-- Selected Icon Preview --}}
                 <template x-if="state">
-                    <span class="fi-icon-picker-preview flex-shrink-0" x-init="$watch('state', async (value) => {
+                    <span class="fi-icon-picker-preview shrink-0" x-init="$watch('state', async (value) => {
                         if (value) {
-                            const response = await fetch('/filament-icon-picker/icon/' + encodeURIComponent(value));
-                            if (response.ok) {
-                                $el.innerHTML = await response.text();
+                            // Try cache first
+                            if (iconCache[value]) {
+                                $el.innerHTML = iconCache[value];
+                            } else {
+                                const response = await fetch('/filament-icon-picker/icon/' + encodeURIComponent(value));
+                                if (response.ok) {
+                                    const svg = await response.text();
+                                    iconCache[value] = svg;
+                                    $el.innerHTML = svg;
+                                }
                             }
                         }
                     });
                     if (state) {
-                        fetch('/filament-icon-picker/icon/' + encodeURIComponent(state))
-                            .then(r => r.text())
-                            .then(svg => $el.innerHTML = svg);
+                        // Try cache first for initial load
+                        if (iconCache[state]) {
+                            $el.innerHTML = iconCache[state];
+                        } else {
+                            fetch('/filament-icon-picker/icon/' + encodeURIComponent(state))
+                                .then(r => r.text())
+                                .then(svg => {
+                                    iconCache[state] = svg;
+                                    $el.innerHTML = svg;
+                                });
+                        }
                     }"></span>
                 </template>
 
@@ -206,7 +236,7 @@
                 {{-- Clear Button --}}
                 <template x-if="state">
                     <span x-on:click.stop="clearSelection()"
-                        class="flex-shrink-0 flex items-center justify-center rounded h-5 w-5 text-gray-400 hover:text-gray-500 dark:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/10"
+                        class="shrink-0 flex items-center justify-center rounded h-5 w-5 text-gray-400 hover:text-gray-500 dark:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/10"
                         x-bind:title="translations.clear">
                         <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                             <path
@@ -216,7 +246,7 @@
                 </template>
 
                 {{-- Dropdown Icon --}}
-                <span class="flex-shrink-0 text-gray-400 dark:text-gray-500">
+                <span class="shrink-0 text-gray-400 dark:text-gray-500">
                     <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd"
                             d="M10.53 3.47a.75.75 0 0 0-1.06 0L6.22 6.72a.75.75 0 0 0 1.06 1.06L10 5.06l2.72 2.72a.75.75 0 1 0 1.06-1.06l-3.25-3.25Zm-4.31 9.81 3.25 3.25a.75.75 0 0 0 1.06 0l3.25-3.25a.75.75 0 1 0-1.06-1.06L10 14.94l-2.72-2.72a.75.75 0 0 0-1.06 1.06Z"
@@ -268,7 +298,7 @@
                         <div class="flex gap-3">
                             {{-- Provider Select --}}
                             <template x-if="showSetFilter && availableSets.length > 1">
-                                <select x-model="selectedSet"
+                                <select x-model="selectedSet" x-on:change="handleSetChange()"
                                     class="fi-select-input block w-48 rounded-lg border-none bg-gray-50 py-2 pe-8 ps-3 text-sm text-gray-950 ring-1 ring-inset ring-gray-950/10 transition duration-75 focus:bg-white focus:ring-2 focus:ring-inset focus:ring-primary-600 dark:bg-white/5 dark:text-white dark:ring-white/20 dark:focus:bg-white/10 dark:focus:ring-primary-500">
                                     <option value="" x-text="translations.allSets + ' (' + totalIcons + ')'">
                                     </option>
@@ -279,21 +309,19 @@
                             </template>
 
                             {{-- Search Input --}}
-                            <template x-if="isSearchable">
-                                <div class="relative flex-1">
-                                    <div class="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3">
-                                        <svg class="h-5 w-5 text-gray-400 dark:text-gray-500"
-                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                            <path fill-rule="evenodd"
-                                                d="M9 3.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11ZM2 9a7 7 0 1 1 12.452 4.391l3.328 3.329a.75.75 0 1 1-1.06 1.06l-3.329-3.328A7 7 0 0 1 2 9Z"
-                                                clip-rule="evenodd" />
-                                        </svg>
-                                    </div>
-                                    <input type="search" x-ref="searchInput" x-model.debounce.400ms="search"
-                                        x-bind:placeholder="translations.searchPlaceholder"
-                                        class="fi-input block w-full rounded-lg border-none bg-gray-50 py-2 pe-3 ps-10 text-sm text-gray-950 ring-1 ring-inset ring-gray-950/10 transition duration-75 placeholder:text-gray-400 focus:bg-white focus:ring-2 focus:ring-inset focus:ring-primary-600 dark:bg-white/5 dark:text-white dark:ring-white/20 dark:placeholder:text-gray-500 dark:focus:bg-white/10 dark:focus:ring-primary-500" />
+                            <div x-show="isSearchable" class="relative flex-1">
+                                <div class="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3">
+                                    <svg class="h-5 w-5 text-gray-400 dark:text-gray-500"
+                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd"
+                                            d="M9 3.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11ZM2 9a7 7 0 1 1 12.452 4.391l3.328 3.329a.75.75 0 1 1-1.06 1.06l-3.329-3.328A7 7 0 0 1 2 9Z"
+                                            clip-rule="evenodd" />
+                                    </svg>
                                 </div>
-                            </template>
+                                <input type="text" x-ref="searchInput" x-model="search" x-on:input="handleSearchInput()"
+                                    x-bind:placeholder="translations.searchPlaceholder"
+                                    class="fi-input block w-full rounded-lg border-none bg-gray-50 py-2 pe-3 ps-10 text-sm text-gray-950 ring-1 ring-inset ring-gray-950/10 transition duration-75 placeholder:text-gray-400 focus:bg-white focus:ring-2 focus:ring-inset focus:ring-primary-600 dark:bg-white/5 dark:text-white dark:ring-white/20 dark:placeholder:text-gray-500 dark:focus:bg-white/10 dark:focus:ring-primary-500" />
+                            </div>
                         </div>
                     </div>
 
@@ -336,7 +364,7 @@
                                             icon.name
                                     }"
                                     class="fi-icon-picker-item relative flex aspect-square items-center justify-center rounded-lg p-3 transition duration-75 outline-none focus-visible:ring-2 focus-visible:ring-primary-500 border">
-                                    <span class="fi-icon-picker-icon" x-init="loadIconSvg(icon.name, $el)"></span>
+                                    <span class="fi-icon-picker-icon" x-html="icon.svg"></span>
                                 </button>
                             </template>
                         </div>
