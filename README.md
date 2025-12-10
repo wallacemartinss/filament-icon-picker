@@ -454,7 +454,6 @@ IconPickerEntry::make('status_icon')
     ->animation(fn ($record) => $record->is_loading ? 'spin' : null)
     ->showIconName(false)
 ```
-```
 
 ### Using Icon Enums
 
