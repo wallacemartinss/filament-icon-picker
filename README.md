@@ -3,7 +3,7 @@
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/wallacemartinss/filament-icon-picker.svg?style=flat-square)](https://packagist.org/packages/wallacemartinss/filament-icon-picker)
 [![Total Downloads](https://img.shields.io/packagist/dt/wallacemartinss/filament-icon-picker.svg?style=flat-square)](https://packagist.org/packages/wallacemartinss/filament-icon-picker)
 
-A beautiful, modern icon picker component for Filament v4, powered by [blade-ui-kit/blade-icons](https://github.com/blade-ui-kit/blade-icons).
+A beautiful, modern icon picker component for Filament v5, powered by [blade-ui-kit/blade-icons](https://github.com/blade-ui-kit/blade-icons).
 
 ![Filament Icon Picker](docs/images/principal.png)
 
@@ -34,8 +34,8 @@ A beautiful, modern icon picker component for Filament v4, powered by [blade-ui-
 ## Requirements
 
 - PHP 8.2+
-- Laravel 11+
-- Filament 4.0+
+- Laravel 12+
+- Filament 5.0+
 - blade-ui-kit/blade-icons 1.0+
 
 ## Installation
