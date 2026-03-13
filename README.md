@@ -66,6 +66,7 @@ This will show you an interactive menu to select which icon packages to install:
   ○ Material - Google Material Design (~10,000 icons)
   ○ Tabler - Tabler Icons (~4,400 icons)
   ○ Lucide - Lucide Icons (~1,400 icons)
+  ○ Hugeicons - Hugeicons (~4,500 icons)
 ```
 
 **Other options:**
@@ -98,6 +99,9 @@ composer require blade-ui-kit/blade-tabler-icons
 
 # Lucide Icons (1400+ icons)
 composer require mallardduck/blade-lucide-icons
+
+# Hugeicons (4500+ icons)
+composer require afatmustafa/blade-hugeicons
 ```
 
 See all available icon packages at [Blade Icons](https://blade-ui-kit.com/blade-icons#icon-packages).
@@ -184,6 +188,7 @@ Icon::heroicon('users', 'solid')         // heroicon-s-users
 Icon::phosphor('whatsapp-logo', 'duotone') // phosphor-whatsapp-logo-duotone
 Icon::fontawesome('heart', 'solid')      // fas-heart
 Icon::fontawesome('github', 'brands')    // fab-github
+Icon::hugeicons('menu-01')                 // hugeicons-menu-01
 ```
 
 

@@ -4,6 +4,11 @@ All notable changes to `filament-icon-picker` will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+- Support for `afatmustafa/blade-hugeicons` icon package (~4,500 icons)
+- `hugeicons()` method to the `Icon` helper class
+- Automatic prefix detection for `hugeicons-` icons
+
 ## [1.4.4] - 2025-12-08
 
 ### Fixed
