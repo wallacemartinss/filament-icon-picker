@@ -128,6 +128,14 @@ class Icon implements ScalableIcon
     }
 
     /**
+     * Create a Hugeicons icon.
+     */
+    public static function hugeicons(string $name): static
+    {
+        return new static("hugeicons-{$name}", 'hugeicons');
+    }
+
+    /**
      * Get the icon name.
      */
     public function getName(): string
@@ -190,6 +198,10 @@ class Icon implements ScalableIcon
 
         if (str_starts_with($name, 'bi-')) {
             return 'bootstrap-icons';
+        }
+
+        if (str_starts_with($name, 'hugeicons-')) {
+            return 'hugeicons';
         }
 
         return 'unknown';

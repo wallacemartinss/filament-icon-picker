@@ -41,7 +41,8 @@
         "secondnetwork/blade-tabler-icons": "Tabler Icons - 4400+ icons",
         "mallardduck/blade-lucide-icons": "Lucide Icons - 1400+ icons",
         "davidhsianturi/blade-bootstrap-icons": "Bootstrap Icons - 2000+ icons",
-        "andreiio/blade-remix-icon": "Remix Icons - 2800+ icons"
+        "andreiio/blade-remix-icon": "Remix Icons - 2800+ icons",
+        "afatmustafa/blade-hugeicons": "Hugeicons - 4500+ icons"
     },
     "autoload": {
         "psr-4": {

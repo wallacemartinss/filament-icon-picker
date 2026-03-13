@@ -104,6 +104,12 @@ final class IconHelperTest extends TestCase
     }
 
     #[Test]
+    public function it_generates_hugeicons(): void
+    {
+        $this->assertEquals('hugeicons-menu-01', (string) Icon::hugeicons('menu-01'));
+    }
+
+    #[Test]
     public function it_can_create_icon_from_full_name(): void
     {
         $icon = Icon::make('heroicon-o-users');
@@ -117,5 +123,6 @@ final class IconHelperTest extends TestCase
         $this->assertEquals('heroicons', Icon::heroicon('users')->getSet());
         $this->assertEquals('google-material-design-icons', Icon::material('home')->getSet());
         $this->assertEquals('phosphor-icons', Icon::phosphor('heart')->getSet());
+        $this->assertEquals('hugeicons', Icon::hugeicons('star')->getSet());
     }
 }
