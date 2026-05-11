@@ -4,6 +4,11 @@ All notable changes to `filament-icon-picker` will be documented in this file.
 
 ## [Unreleased]
 
+## [1.4.5] - 2026-05-11
+
+### Fixed
+- Removed `ReflectionProperty::setAccessible(true)` call in `IconSetManager::getSets()` — it has been a no-op since PHP 8.1 (all reflected properties are accessible) and now emits a deprecation warning on PHP 8.5.
+
 ## [1.4.4] - 2025-12-08
 
 ### Fixed
