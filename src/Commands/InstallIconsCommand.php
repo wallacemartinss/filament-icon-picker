@@ -76,6 +76,12 @@ class InstallIconsCommand extends Command
             'icons' => '~2,800',
             'sets' => ['remix'],
         ],
+        'hugeicons' => [
+            'package' => 'afatmustafa/blade-hugeicons',
+            'description' => 'Hugeicons (Free)',
+            'icons' => '~5,800',
+            'sets' => ['hugeicons'],
+        ],
     ];
 
     public function handle(): int
