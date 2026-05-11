@@ -35,7 +35,6 @@ class IconSetManager
 
         if ($reflection->hasProperty('sets')) {
             $setsProperty = $reflection->getProperty('sets');
-            $setsProperty->setAccessible(true);
             $factorySets = $setsProperty->getValue($this->iconFactory);
 
             foreach ($factorySets as $setName => $setConfig) {
