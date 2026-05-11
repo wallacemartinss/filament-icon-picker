@@ -98,6 +98,9 @@ composer require blade-ui-kit/blade-tabler-icons
 
 # Lucide Icons (1400+ icons)
 composer require mallardduck/blade-lucide-icons
+
+# Hugeicons Free (5800+ icons)
+composer require afatmustafa/blade-hugeicons
 ```
 
 See all available icon packages at [Blade Icons](https://blade-ui-kit.com/blade-icons#icon-packages).

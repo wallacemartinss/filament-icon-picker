@@ -4,6 +4,11 @@ All notable changes to `filament-icon-picker` will be documented in this file.
 
 ## [Unreleased]
 
+## [2.0.2] - 2026-05-11
+
+### Added
+- `afatmustafa/blade-hugeicons` (Hugeicons Free, ~5,800 icons) as a recommended icon package — available via `php artisan filament-icon-picker:install-icons` and listed in the README. Any other blade-icons compatible package is also detected automatically.
+
 ## [2.0.1] - 2026-05-11
 
 ### Fixed
