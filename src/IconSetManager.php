@@ -81,17 +81,31 @@ class IconSetManager
      */
     public function getIcons(?array $allowedSets = null): Collection
     {
-        $cacheKey = 'filament-icon-picker:icons:'.md5(serialize($allowedSets));
+        $cacheKey = 'filament-icon-picker:icons:' . md5(serialize($allowedSets));
 
-        if (config('filament-icon-picker.cache_icons', true)) {
-            return Cache::remember(
+        if (! config('filament-icon-picker.cache_icons', true)) {
+            return $this->loadIcons($allowedSets);
+        }
+
+        $icons = Cache::remember(
+            $cacheKey,
+            config('filament-icon-picker.cache_duration', 86400),
+            fn () => $this->loadIcons($allowedSets)->toArray()
+        );
+
+        if (! is_array($icons)) {
+            Cache::forget($cacheKey);
+
+            $icons = $this->loadIcons($allowedSets)->toArray();
+
+            Cache::put(
                 $cacheKey,
-                config('filament-icon-picker.cache_duration', 86400),
-                fn () => $this->loadIcons($allowedSets)
+                $icons,
+                config('filament-icon-picker.cache_duration', 86400)
             );
         }
 
-        return $this->loadIcons($allowedSets);
+        return collect($icons);
     }
 
     /**
