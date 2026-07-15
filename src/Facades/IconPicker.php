@@ -15,7 +15,7 @@ use Wallacemartinss\FilamentIconPicker\IconSetManager;
  * @method static array getIconsPaginated(int $page = 1, int $perPage = 100, ?string $search = null, ?string $setFilter = null, ?array $allowedSets = null)
  * @method static void clearCache()
  *
- * @see \Wallacemartinss\FilamentIconPicker\IconSetManager
+ * @see IconSetManager
  */
 class IconPicker extends Facade
 {

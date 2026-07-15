@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Wallacemartinss\FilamentIconPicker\Tests\Unit;
 
+use Illuminate\Support\Collection;
 use PHPUnit\Framework\Attributes\Test;
 use Wallacemartinss\FilamentIconPicker\IconSetManager;
 use Wallacemartinss\FilamentIconPicker\Tests\TestCase;
@@ -33,7 +34,7 @@ final class IconSetManagerTest extends TestCase
         $manager = new IconSetManager;
         $icons = $manager->getIcons();
 
-        $this->assertInstanceOf(\Illuminate\Support\Collection::class, $icons);
+        $this->assertInstanceOf(Collection::class, $icons);
     }
 
     #[Test]
@@ -42,7 +43,7 @@ final class IconSetManagerTest extends TestCase
         $manager = new IconSetManager;
         $results = $manager->searchIcons('user');
 
-        $this->assertInstanceOf(\Illuminate\Support\Collection::class, $results);
+        $this->assertInstanceOf(Collection::class, $results);
     }
 
     #[Test]
